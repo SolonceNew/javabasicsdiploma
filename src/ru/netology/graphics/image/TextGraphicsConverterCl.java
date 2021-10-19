@@ -27,16 +27,16 @@ public class TextGraphicsConverterCl implements TextGraphicsConverter {
         int newWigth = originWidth <= maxWidth ? originWidth : (originWidth / (originWidth / maxWidth));
         int newHeigth = originHeight <= maxHeight ? originHeight : (originHeight / (originHeight / maxHeight));
         Image scaledImage = img.getScaledInstance(newWigth, newHeigth, BufferedImage.SCALE_SMOOTH);
-        BufferedImage draftImg = new BufferedImage(newHeigth, newHeigth, BufferedImage.TYPE_BYTE_GRAY);
+        BufferedImage draftImg = new BufferedImage(newWigth, newHeigth, BufferedImage.TYPE_BYTE_GRAY);
         Graphics2D graphics = draftImg.createGraphics();
         graphics.drawImage(scaledImage, 0, 0, null);
         WritableRaster bwRaster = draftImg.getRaster();
-        char[][] savedC = new char[newWigth][newHeigth];
-        for (int w = 0; w < newWigth; w++) {
-            for (int h = 0; h < newHeigth; h++) {
-                int color = bwRaster.getPixel(h, w, new int[3])[0];
+        char[][] savedC = new char[newHeigth][newWigth];
+        for (int h = 0; h < newHeigth; h++) {
+            for (int w = 0; w < newWigth; w++) {
+                int color = bwRaster.getPixel(w, h, new int[3])[0];
                 char c = schema.convert(color);
-                savedC[w][h] = c;
+                savedC[h][w] = c;
             }
         }
         StringBuilder sb = new StringBuilder();
